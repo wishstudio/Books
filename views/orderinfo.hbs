@@ -1,0 +1,21 @@
+<h3>订单信息</h3>
+<form action="/order/edit" method="post">
+    <input type="hidden" name="id" value="{{id}}">
+    <input type="hidden" name="bookId" value="{{book.id}}">
+    <table>
+        <tr><td>书名</td><td><a href="/book/{{book.id}}">{{book.title}}</a></td></tr>
+        <tr><td>零售价</td><td>{{book.price}}</td></tr>
+        <tr><td>渠道商</td><td><input type="text" size="30" maxlength="30" name="upstream" value="{{upstream}}"></td></tr>
+        <tr><td>进货价</td><td><input type="text" size="30" maxlength="30" name="price" value="{{uprice}}"></td></tr>
+        <tr><td>数量</td><td><input type="text" size="30" maxlength="30" name="count" value="{{count}}"></td></tr>
+        <tr><td>状态</td><td>{{status}}</td></tr>
+        {{#if finalized}}
+            <tr><td>订单不可修改。</td></tr>
+        {{else}}
+            <tr><td><button>{{#if id}}编辑{{else}}增加{{/if}}</button></td></tr>
+            {{#if id}}
+            <tr><td><a href="/order/{{id}}/pay">支付</a><a href="/order/{{id}}/cancel">取消</a></td></tr>
+            {{/if}}
+        {{/if}}
+    </table>
+</form>

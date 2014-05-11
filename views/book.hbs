@@ -1,0 +1,21 @@
+<h3>书籍列表</h3>
+<form action="/book" method="post">
+    <table>
+        <tr><td>ISBN</td><td><input type="text" size="30" maxlength="30" name="isbn"></td></tr>
+        <tr><td>书名</td><td><input type="text" size="30" maxlength="30" name="title"></td></tr>
+        <tr><td>出版社</td><td><input type="text" size="30" maxlength="30" name="publisher"></td></tr>
+        <tr><td>作者</td><td><input type="text" size="30" maxlength="30" name="author"></td></tr>
+        <tr><td><button>搜索</button></td></tr>
+    </table>
+</form>
+<a href="/book/add">增加新书</a><br/>
+<h3>搜索结果：</h3>
+<table>
+    <tr><th>ISBN</th><th>书名</th><th>出版社</th><th>作者</th><th>价格</th><th>库存</th><th>操作</th></tr>
+    {{#each book}}
+    <tr>
+        <td>{{isbn}}</td><td>{{title}}</td><td>{{publisher}}</td><td>{{author}}</td></td><td>{{price}}</td><td>{{stock}}</td>
+        <td><a href="/book/{{id}}">详细信息</a></td>
+    </tr>
+    {{/each}}
+</table>

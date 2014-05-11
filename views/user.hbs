@@ -1,0 +1,19 @@
+<h3>用户列表</h3>
+<form action="/user" method="post">
+    <table>
+        <tr><td>工号</td><td><input type="text" size="30" maxlength="30" name="uid"></td></tr>
+        <tr><td>用户名</td><td><input type="text" size="30" maxlength="30" name="name"></td></tr>
+        <tr><td>姓名</td><td><input type="text" size="30" maxlength="30" name="realname"></td></tr>
+        <tr><td><button>搜索</button></td></tr>
+    </table>
+</form>
+<h3>搜索结果：</h3>
+<table>
+    <tr><th>工号</th><th>用户名</th><th>邮箱</th><th>姓名</th><th>性别</th><th>年龄</th><th>操作</th></tr>
+    {{#each user}}
+    <tr>
+        <td>{{uid}}</td><td>{{name}}</td><td>{{email}}</td><td>{{realname}}</td><td>{{gender}}</td><td>{{age}}</td>
+        <td><a href="/userinfo/{{id}}">详细信息</a></td>
+    </tr>
+    {{/each}}
+</table>

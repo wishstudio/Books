@@ -6,6 +6,7 @@
         "bookshelf": "0.6.8",
         "express": "3.4.6",
         "express-hbs": "0.7.9",
+        "knex": "0.5.8",
         "moment": "2.4.0",
         "mysql": "2.2.0"
     }

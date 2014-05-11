@@ -1,0 +1,13 @@
+<h3>账单记录</h3>
+<form action="/invoice" method="post">
+    <table>
+        <tr><td><button>搜索</button></td></tr>
+    </table>
+</form>
+<h3>搜索结果：</h3>
+<table>
+    <tr><th>时间</th><th>类型</th><th>信息</th></tr>
+    {{#each invoice}}
+    <tr><td>{{logtime}}</td><td>{{type}}</td><td>{{message}}</td></tr>
+    {{/each}}
+</table>

@@ -1,5 +1,10 @@
-var Bookshelf = require('bookshelf').DB;
+var bookshelf = require('bookshelf').DB;
 
-var User = Bookshelf.Model.extend({
-    tableName: 'users'
+exports.User = bookshelf.Model.extend({
+    tableName: 'users',
+
+    authenticate: function (req) {
+        var cookies = req.cookies;
+        cookies.id
+    }
 });

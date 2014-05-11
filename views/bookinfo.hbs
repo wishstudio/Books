@@ -1,0 +1,24 @@
+<h3>书籍信息</h3>
+<form action="/book/edit" method="post">
+    <input type="hidden" name="id" value="{{id}}">
+    <table>
+        <tr><td>ISBN</td><td><input type="text" size="30" maxlength="30" name="isbn" value="{{isbn}}"></td></tr>
+        <tr><td>书名</td><td><input type="text" size="30" maxlength="30" name="title" value="{{title}}"></td></tr>
+        <tr><td>出版社</td><td><input type="text" size="30" maxlength="30" name="publisher" value="{{publisher}}""></td></tr>
+        <tr><td>作者</td><td><input type="text" size="30" maxlength="30" name="author" value="{{author}}"></td></tr>
+        <tr><td>价格</td><td><input type="text" size="30" maxlength="30" name="price" value="{{price}}"></td></tr>
+        <tr><td>库存</td><td><input type="text" size="30" maxlength="30" name="stock" value="{{stock}}" readonly></td></tr>
+        <tr><td><button>{{#if id}}编辑{{else}}增加{{/if}}</button></td></tr>
+        <tr><td>{{#if id}}<a href="/book/{{id}}/order">增加订单</a>{{/if}}</td></tr>
+    </table>
+</form>
+<form action="/book/{{id}}/buy", method="post">
+    购买：<input type="text" size="10" maxlength="10" name="count"/>本<button>确认</button>
+</form>
+<h3>相关订单</h3>
+<table>
+    <tr><th>渠道商</th><th>进货价</th><th>数量</th><th>状态</th><th>操作</th></tr>
+    {{#each order}}
+    <tr><td>{{upstream}}</td><td>{{uprice}}</td><td>{{count}}</td><td>{{status}}</td><td><a href="/order/{{id}}">详细信息</a></td></tr>
+    {{/each}}
+</table>

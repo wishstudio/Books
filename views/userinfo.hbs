@@ -1,0 +1,13 @@
+<h3>用户信息</h3>
+<form action="/user/edit" method="post">
+    <input type="hidden" name="id" value="{{id}}">
+    <table>
+        <tr><td>工号</td><td><input type="text" size="30" maxlength="30" name="uid" value="{{uid}}"></td></tr>
+        <tr><td>用户名</td><td><input type="text" size="30" maxlength="30" name="name" value="{{name}}"></td></tr>
+        <tr><td>邮箱</td><td><input type="text" size="30" maxlength="30" name="email" value="{{email}}""></td></tr>
+        <tr><td>姓名</td><td><input type="text" size="30" maxlength="30" name="realname" value="{{realname}}"></td></tr>
+        <tr><td>性别</td><td>{{gender}}</td></tr>
+        <tr><td>年龄</td><td><input type="text" size="30" maxlength="30" name="age" value="{{age}}"></td></tr>
+        <tr><td><button>{{#if id}}编辑{{else}}增加{{/if}}</button></td></tr>
+    </table>
+</form>
