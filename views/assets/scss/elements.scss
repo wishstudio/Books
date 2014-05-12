@@ -1,0 +1,102 @@
+a {
+	@include transition(color, 0.3s);
+	background: transparent;
+	text-decoration: none;
+}
+
+@include link-color(darken($secondary, 30%), $bright);
+
+blockquote {
+	background: $secondary;
+	border-left: 0.5rem solid darken($secondary, 10%);
+	margin: 0 0;
+	padding: 0rem 2rem;
+	font-style: italic;
+}
+
+code {
+	font-family: $monospace-font;
+	background-color: $secondary;
+	border: 0.063rem solid darken($secondary, 10%);
+}
+
+pre {
+	background-color: $secondary;
+	border: 0.063rem solid darken($secondary, 10%);
+}
+pre code {
+	border: none;
+}
+
+hr {
+	border: 0;
+	border-top: 0.063rem solid $primary;
+}
+
+@mixin header-font {
+	font-family: $sans-font;
+	font-weight: lighter;
+	line-height: 1em;
+	@include link-color(black, $bright);
+}
+
+h1 {
+	@include header-font;
+	font-size: 2.5em;
+	margin: 0.75em 0;
+}
+
+h2 {
+	@include header-font;
+	font-size: 2em;
+	margin: 0.5em 0;
+}
+
+h3 {
+	@include header-font;
+	font-size: 1.5em;
+	margin: 1em 0;
+}
+
+h4 {
+	@include header-font;
+	font-size: 1.313em;
+	margin: 1em 0;
+}
+
+h5 {
+	@include header-font;
+	font-size: 1.125em;
+	margin: 1em 0;
+}
+
+h6 {
+	@include header-font;
+	font-size: 1em;
+	margin: 1.313em 0;
+}
+
+img {
+	border: 0;
+	max-width: 100%;
+}
+
+table {
+	border-width: 1px;
+	border-color: $dark;
+	border-collapse: collapse;
+}
+
+table th {
+	border-width: 1px;
+	padding: 0 1rem 0 1rem;
+	border-style: solid;
+	border-color: $primary;
+}
+
+table tr {
+	border-width: 1px;
+	padding: 0 1rem 0 1rem;
+	border-style: solid;
+	border-color: $primary;
+}

@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{title}}</title>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    {{! Document Settings }}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA_Compatible" content="IE=edge" />
+
+    {{! Page Meta }}
+    <title>{{meta_title}}</title>
+
+    {{! Responsive Meta Tags }}
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {{! Styles }}
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
 </head>
 
 <body>
-    <a href="/user">用户管理</a>
-    <a href="/book">书籍管理</a>
-    <a href="/order">订单管理</a>
-    <a href="/invoice">账单记录</a>
-    <a href="/logout">登出账户</a>
-    {{{body}}}
+    {{> header}}
+    <main class="main">
+        <div class="wrapper">
+            {{{body}}}
+        </div>
+    </main>
+    {{> footer}}
 </body>
 </html>

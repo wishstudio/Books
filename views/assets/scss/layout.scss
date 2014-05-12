@@ -1,0 +1,61 @@
+html {
+	font-size: 1em;
+}
+
+body {
+	margin: 0;
+	font-family: $serif-font;
+	line-height: $golden;
+	word-wrap: break-word;
+}
+
+.wrapper {
+	max-width: 47rem;
+	margin: 0 auto;
+	padding-left: $golden * 2;
+	padding-right: $golden * 2;
+}
+.main {
+	width: 100%;
+	background-color: $primary;
+
+	.wrapper {
+		min-height: 40rem;
+		padding-top: $golden;
+		padding-bottom: $golden;
+		background-color: white;
+		border-left: 0.1rem solid lighten($primary, 3%);
+		border-right: 0.1rem solid lighten($primary, 3%);
+	}
+}
+.header {
+	margin: 0 auto;
+	background-color: $header;
+
+	.wrapper {
+		padding-top: 0.1em;
+		padding-bottom: 0;
+	}
+}
+.footer {
+	text-align: right;
+	font-size: 0.95em;
+	background-color: $dark;
+	color: $gray-darker;
+	.wrapper {
+		padding-top: $golden / 2;
+		padding-bottom: $golden / 2;
+	}
+	@include link-color($gray-dark, white);
+}
+.navigation {
+	left: 0;
+	right: 0;
+	background-color: $navigation;
+	border-top: 0.1rem solid darken($navigation, 5%);
+	border-bottom: 0.1rem solid darken($navigation, 2%);
+	.wrapper {
+		padding-top: 0.2rem;
+		padding-bottom: 0.2rem;
+	}
+}

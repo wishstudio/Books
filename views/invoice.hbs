@@ -8,6 +8,6 @@
 <table>
     <tr><th>时间</th><th>类型</th><th>信息</th></tr>
     {{#each invoice}}
-    <tr><td>{{logtime}}</td><td>{{type}}</td><td>{{message}}</td></tr>
+    <tr><td>{{prettifyTime logtime}}</td><td>{{type}}</td><td>{{message}}</td></tr>
     {{/each}}
 </table>

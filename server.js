@@ -32,7 +32,12 @@ handlebars.registerHelper('orderStatusName', function(status) {
         return '已取消';
     else
         return '待支付';
-})
+});
+
+var moment = require('moment');
+handlebars.registerHelper('prettifyTime', function(time) {
+    return moment(time).format('YYYY-mm-DD hh:mm:ss');
+});
 
 /* Initialize database */
 var bookshelf = require('bookshelf');
@@ -237,7 +242,7 @@ app.post('/book/:id/buy', function(req, res) {
         return book.save();
     }).then(function(book) {
         return new Invoice({
-            logtime: Date.now(),
+            logtime: new Date(),
             type: '收入',
             message: '售出' + count + '本“' + book.get('title') + '” 收入' + count * book.get('price') + '元'
         }).save();
@@ -359,10 +364,9 @@ app.get('/order/:id/pay', function(req, res) {
             return order.save(null, { transacting: t }).then(function() {
                 return knex('books').transacting(t).where('id', '=', order.get('bookId')).increment('stock', order.get('count'));
             }).then(function() {
-                throw 'error';
                 var info = order.toJSON();
                 return new Invoice({
-                    logtime: Date.now(),
+                    logtime: new Date(),
                     type: '支出',
                     message: '从“' + info.upstream + '”进货' + info.count + '本“' + info.book.title
                         + '” 支出了' + info.uprice * info.count + '元'

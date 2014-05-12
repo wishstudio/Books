@@ -1,0 +1,22 @@
+$gray-lightest:     #F8F8F8;
+$gray-lighter:      #EEEEEE;
+$gray-light:        #DDDDDD;
+$gray:              #CCCCCC;
+$gray-dark:         #999999;
+$gray-darker:       #666666;
+$gray-darkest:      #333333;
+
+$golden: 1.618rem;
+
+$primary:        $gray-lighter;
+$secondary:      #F0F7FF;
+$dark:           #112233;
+$bright:         #FF622B;
+$header:         #DDDDDD;
+
+$navigation:     lighten($header, 10%);
+
+$chinese-font: 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei';
+$sans-font: 'Open Sans', $chinese-font, sans-serif;
+$serif-font: 'Verdana', $chinese-font, serif;
+$monospace-font: monospace;

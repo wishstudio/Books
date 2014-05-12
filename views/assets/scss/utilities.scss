@@ -1,0 +1,24 @@
+@mixin link-color($normal, $hover) {
+  a:link, a:visited {
+    color: $normal;
+  }
+  a:active, a:hover {
+    color: $hover;
+  }
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+       -o-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin transition($attr, $time) {
+  -webkit-transition: $attr $time;
+     -moz-transition: $attr $time;
+      -ms-transition: $attr $time;
+       -o-transition: $attr $time;
+          transition: $attr $time;
+}
