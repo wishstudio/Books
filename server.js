@@ -36,7 +36,7 @@ handlebars.registerHelper('orderStatusName', function(status) {
 
 var moment = require('moment');
 handlebars.registerHelper('prettifyTime', function(time) {
-    return moment(time).format('YYYY-mm-DD hh:mm:ss');
+    return moment(time).format('YYYY-MM-DD hh:mm:ss');
 });
 
 /* Initialize database */
@@ -423,6 +423,22 @@ app.get('/order', function(req, res) {
 
 app.get('/invoice', function(req, res) {
     Invoice.collection().query(function(qb) {
+    }).fetch().then(function(collection) {
+        return collection.mapThen(function(invoice) {
+            return invoice.toJSON();
+        });
+    }).then(function(invoices) {
+        res.render('invoice', { invoice: invoices });
+    }).catch(function() {
+        res.redirect('/');
+    });
+});
+
+app.post('/invoice', function(req, res) {
+    var start = new Date(req.body.start);
+    var end = new Date(req.body.end);
+    Invoice.collection().query(function(qb) {
+        qb.whereBetween('logtime', [start.toJSON(), end.toJSON()]);
     }).fetch().then(function(collection) {
         return collection.mapThen(function(invoice) {
             return invoice.toJSON();
