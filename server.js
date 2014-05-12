@@ -15,6 +15,25 @@ app.use(express.cookieParser());
 app.use(express.session({ secret: "Books app" }));
 app.use(express.urlencoded());
 
+/* Handlebars helpers */
+handlebars.registerHelper('genderName', function(gender) {
+    if (gender == 0)
+        return '男';
+    else if (gender == 1)
+        return '女';
+    else
+        return '';
+});
+
+handlebars.registerHelper('orderStatusName', function(status) {
+    if (status == 1)
+        return '已支付';
+    if (status == 2)
+        return '已取消';
+    else
+        return '待支付';
+})
+
 /* Initialize database */
 var bookshelf = require('bookshelf');
 bookshelf.DB = bookshelf.initialize({
@@ -39,15 +58,31 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
+    var name = req.body.name;
+    var password = req.body.password;
+    var hashed = User.encryptPassword(password);
+    new User({ name: name, password: hashed }).fetch().then(function(user) {
+        req.session.uname = user.get('name');
+        req.session.upower = user.get('power');
+        res.redirect('/');
+    }).catch(function(err) {
+        res.redirect('/login');
+    })
 });
 
 app.all('*', function(req, res, next) {
-    if (false) {
-        res.redirect('/login');
-    }
-    else {
+    if (req.session.uname) {
         next();
     }
+    else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/logout', function(req, res) {
+    delete req.session.uname;
+    delete req.session.upower;
+    res.redirect('/');
 });
 
 app.get('/user', function(req, res) {
@@ -61,13 +96,13 @@ app.post('/user', function(req, res) {
 
     User.collection().query(function(qb) {
         if (uid) {
-            qb.where('uid', 'like', uid);
+            qb.where('uid', 'like', '%' + uid + '%');
         }
         if (name) {
-            qb.where('name', 'like', name);
+            qb.where('name', 'like', '%' + name + '%');
         }
         if (realname) {
-            qb.where('realname', 'like', realname);
+            qb.where('realname', 'like', '%' + realname + '%');
         }
     }).fetch().then(function(collection) {
         return collection.mapThen(function(user) {
@@ -80,10 +115,24 @@ app.post('/user', function(req, res) {
     });
 });
 
+app.get('/user/add', function(req, res) {
+    res.render('userinfo');
+});
+
+app.get('/user/:id', function(req, res) {
+    var id = req.params.id;
+    new User({ id: id }).fetch().then(function(user) {
+        res.render('userinfo', user.toJSON());
+    }).catch(function() {
+        res.redirect('/');
+    });
+});
+
 app.post('/user/edit', function(req, res) {
     var id = req.body.id;
     var uid = req.body.uid;
     var name = req.body.name;
+    var password = req.body.password;
     var email = req.body.email;
     var realname = req.body.realname;
     var gender = req.body.gender;
@@ -110,12 +159,15 @@ app.post('/user/edit', function(req, res) {
         name: name,
         email: email,
         realname: realname,
-        gender: gender,
+        gender: gender? gender: null,
         age: age
     })
 
     if (id) {
-        user.set("id", id);
+        user.set('id', id);
+    }
+    if (password) {
+        user.set('password', User.encryptPassword(password));
     }
     user.save().then(succ).catch(fail);
 });
@@ -227,16 +279,16 @@ app.post('/book', function(req, res) {
 
     Book.collection().query(function(qb) {
         if (isbn) {
-            qb.where('isbn', 'like', isbn);
+            qb.where('isbn', 'like', '%' + isbn + '%');
         }
         if (title) {
-            qb.where('title', 'like', title);
+            qb.where('title', 'like', '%' + title + '%');
         }
         if (publisher) {
-            qb.where('publisher', 'like', publisher);
+            qb.where('publisher', 'like', '%' + publisher + '%');
         }
         if (author) {
-            qb.where('author', 'like', author);
+            qb.where('author', 'like', '%' + author + '%');
         }
     }).fetch().then(function(collection) {
         return collection.mapThen(function(book) {

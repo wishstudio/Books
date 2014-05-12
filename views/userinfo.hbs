@@ -3,10 +3,17 @@
     <input type="hidden" name="id" value="{{id}}">
     <table>
         <tr><td>工号</td><td><input type="text" size="30" maxlength="30" name="uid" value="{{uid}}"></td></tr>
-        <tr><td>用户名</td><td><input type="text" size="30" maxlength="30" name="name" value="{{name}}"></td></tr>
+        <tr><td>用户名</td><td><input type="password" size="30" maxlength="30" name="name" value="{{name}}"></td></tr>
+        <tr><td>密码</td><td><input type="text" size="30" maxlength="30" name="password"></td></tr>
         <tr><td>邮箱</td><td><input type="text" size="30" maxlength="30" name="email" value="{{email}}""></td></tr>
         <tr><td>姓名</td><td><input type="text" size="30" maxlength="30" name="realname" value="{{realname}}"></td></tr>
-        <tr><td>性别</td><td>{{gender}}</td></tr>
+        <tr><td>性别</td><td>
+        <select name="gender" id="gender" value="1">
+            <option value="">未知</option>
+            <option value="0">男</option>
+            <option value="1">女</option>
+        </select>
+        <script>document.getElementById('gender').value = {{gender}}</script>
         <tr><td>年龄</td><td><input type="text" size="30" maxlength="30" name="age" value="{{age}}"></td></tr>
         <tr><td><button>{{#if id}}编辑{{else}}增加{{/if}}</button></td></tr>
     </table>

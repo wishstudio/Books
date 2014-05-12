@@ -8,7 +8,7 @@
         <tr><td>渠道商</td><td><input type="text" size="30" maxlength="30" name="upstream" value="{{upstream}}"></td></tr>
         <tr><td>进货价</td><td><input type="text" size="30" maxlength="30" name="price" value="{{uprice}}"></td></tr>
         <tr><td>数量</td><td><input type="text" size="30" maxlength="30" name="count" value="{{count}}"></td></tr>
-        <tr><td>状态</td><td>{{status}}</td></tr>
+        <tr><td>状态</td><td>{{orderStatusName status}}</td></tr>
         {{#if finalized}}
             <tr><td>订单不可修改。</td></tr>
         {{else}}

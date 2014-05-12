@@ -3,7 +3,7 @@
     <tr><th>书名</th><th>零售价</th><th>渠道商</th><th>进货价</th><th>数量</th><th>状态</th><th>操作</th></tr>
     {{#each order}}
     <tr>
-        <td>{{book.title}}</td><td>{{book.price}}</td><td>{{upstream}}</td><td>{{uprice}}</td><td>{{count}}</td><td>{{status}}</td>
+        <td>{{book.title}}</td><td>{{book.price}}</td><td>{{upstream}}</td><td>{{uprice}}</td><td>{{count}}</td><td>{{orderStatusName status}}</td>
         <td><a href="/order/{{id}}">详细信息</a></td>
     </tr>
     {{/each}}

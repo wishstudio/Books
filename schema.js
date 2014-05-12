@@ -1,10 +1,19 @@
 var bookshelf = require('bookshelf').DB;
 var knex = bookshelf.knex;
+var User = require('./models/User').User;
 
-function createTable(tableName, table) {
+function createTable(tableName, table, model, initialData) {
     return knex.schema.hasTable(tableName).then(function(exists) {
         if (!exists) {
-            return knex.schema.createTable(tableName, table);
+            var p = knex.schema.createTable(tableName, table);
+            if (model) {
+                return p.then(function() {
+                    return new model(initialData).save();
+                });
+            }
+            else {
+                return p;
+            }
         }
     });
 }
@@ -12,8 +21,8 @@ function createTable(tableName, table) {
 exports.initialize = function() {
     return createTable('users', function(table) {
         table.increments('id').primary();
-        table.string('name', 30).notNullable();
-        table.string('password', 50).notNullable();
+        table.string('name', 30).notNullable().unique();
+        table.string('password', 80).notNullable();
         table.string('email', 50).notNullable();
         table.string('realname', 30);
         table.string('uid', 50);
@@ -21,10 +30,20 @@ exports.initialize = function() {
         table.integer('age');
         table.dateTime('registrationTime').notNullable();
         table.integer('power').notNullable();
+    }, User, {
+        name: 'admin',
+        password: 'a2e942c962f4f4c2c00930d1fde2d5da9df61e6bd2852914c69f18303d70055a', /* 123 */
+        email: 'admin@admin.com',
+        realname: '',
+        uid: '',
+        gender: false,
+        age: 0,
+        registrationTime: Date.now(),
+        power: 1
     }).then(function() {
         return createTable('books', function(table) {
             table.increments('id').primary();
-            table.string('isbn', 20).notNullable();
+            table.string('isbn', 20).notNullable().unique();
             table.string('title', 50).notNullable();
             table.string('publisher', 50);
             table.string('author', 30);
@@ -43,9 +62,9 @@ exports.initialize = function() {
     }).then(function() {
         return createTable('invoices', function(table) {
             table.increments('id').primary();
-            table.dateTime('logtime');
-            table.string('type', 20);
-            table.string('message', 100);
+            table.dateTime('logtime').notNullable();
+            table.string('type', 20).notNullable();
+            table.string('message', 100).notNullable();
         });
     });
 }
