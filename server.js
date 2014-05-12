@@ -62,6 +62,7 @@ app.post('/login', function(req, res) {
     var password = req.body.password;
     var hashed = User.encryptPassword(password);
     new User({ name: name, password: hashed }).fetch().then(function(user) {
+        req.session.uid = user.get('id');
         req.session.uname = user.get('name');
         req.session.upower = user.get('power');
         res.redirect('/');
@@ -80,16 +81,26 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/logout', function(req, res) {
+    delete req.session.uid;
     delete req.session.uname;
     delete req.session.upower;
     res.redirect('/');
 });
 
-app.get('/user', function(req, res) {
+var adminAuthentication = function(req, res, next) {
+    if (req.session.upower != 1) {
+        res.redirect('/user/' + req.session.uid);
+    }
+    else {
+        next();
+    }
+};
+
+app.get('/user', adminAuthentication, function(req, res) {
     res.render('user');
 });
 
-app.post('/user', function(req, res) {
+app.post('/user', adminAuthentication, function(req, res) {
     var uid = req.body.uid;
     var name = req.body.name;
     var realname = req.body.realname;
@@ -115,14 +126,18 @@ app.post('/user', function(req, res) {
     });
 });
 
-app.get('/user/add', function(req, res) {
+app.get('/user/add', adminAuthentication, function(req, res) {
     res.render('userinfo');
 });
 
 app.get('/user/:id', function(req, res) {
     var id = req.params.id;
     new User({ id: id }).fetch().then(function(user) {
-        res.render('userinfo', user.toJSON());
+        var info = user.toJSON();
+        if (req.session.upower == 0 && id != req.session.uid) {
+            info.readonly = true;
+        }
+        res.render('userinfo', info);
     }).catch(function() {
         res.redirect('/');
     });
@@ -130,6 +145,10 @@ app.get('/user/:id', function(req, res) {
 
 app.post('/user/edit', function(req, res) {
     var id = req.body.id;
+    if (req.session.upower == 0 && id != req.session.uid) {
+        res.redirect('/user/' + id);
+        return;
+    }
     var uid = req.body.uid;
     var name = req.body.name;
     var password = req.body.password;
