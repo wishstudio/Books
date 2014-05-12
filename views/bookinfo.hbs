@@ -1,13 +1,13 @@
 <h3>书籍信息</h3>
-<form action="/book/edit" method="post">
+<form action="/book/edit" onsubmit="return verifyForm();" method="post">
     <input type="hidden" name="id" value="{{id}}">
     <table>
-        <tr><td>ISBN</td><td><input type="text" size="30" maxlength="30" name="isbn" value="{{isbn}}"></td></tr>
-        <tr><td>书名</td><td><input type="text" size="30" maxlength="30" name="title" value="{{title}}"></td></tr>
-        <tr><td>出版社</td><td><input type="text" size="30" maxlength="30" name="publisher" value="{{publisher}}""></td></tr>
-        <tr><td>作者</td><td><input type="text" size="30" maxlength="30" name="author" value="{{author}}"></td></tr>
-        <tr><td>价格</td><td><input type="text" size="30" maxlength="30" name="price" value="{{price}}"></td></tr>
-        <tr><td>库存</td><td><input type="text" size="30" maxlength="30" name="stock" value="{{stock}}" readonly></td></tr>
+        <tr><td>ISBN</td><td><input type="text" size="30" maxlength="30" name="isbn" id="isbn" value="{{isbn}}"></td></tr>
+        <tr><td>书名</td><td><input type="text" size="30" maxlength="30" name="title" id="title" value="{{title}}"></td></tr>
+        <tr><td>出版社</td><td><input type="text" size="30" maxlength="30" name="publisher" id="publisher" value="{{publisher}}""></td></tr>
+        <tr><td>作者</td><td><input type="text" size="30" maxlength="30" name="author" id="author" value="{{author}}"></td></tr>
+        <tr><td>价格</td><td><input type="text" size="30" maxlength="30" name="price" id="price" value="{{price}}"></td></tr>
+        <tr><td>库存</td><td><input type="text" size="30" maxlength="30" name="stock" id="stock" value="{{stock}}" readonly></td></tr>
         <tr><td><button>{{#if id}}编辑{{else}}增加{{/if}}</button></td></tr>
         <tr><td>{{#if id}}<a href="/book/{{id}}/order">增加订单</a>{{/if}}</td></tr>
     </table>
@@ -22,3 +22,25 @@
     <tr><td>{{upstream}}</td><td>{{uprice}}</td><td>{{count}}</td><td>{{orderStatusName status}}</td><td><a href="/order/{{id}}">详细信息</a></td></tr>
     {{/each}}
 </table>
+<script>
+function verifyForm() {
+    var isbn = document.getElementById('isbn').value;
+    var title = document.getElementById('title').value;
+    var publisher = document.getElementById('publisher').value;
+    var author = document.getElementById('author').value;
+    var price = document.getElementById('price').value;
+    var stock = document.getElementById('stock').value;
+    if (!isbn) {
+        alert('ISBN 不能为空');
+    }
+    else if (!title) {
+        alert('书名不能为空');
+    }
+    else if (!price.match(/^\d+$/)) {
+        alert('价格非法');
+    }
+    else
+        return true;
+    return false;
+}
+</script>

@@ -1,13 +1,13 @@
 <h3>订单信息</h3>
-<form action="/order/edit" method="post">
+<form action="/order/edit" onsubmit="return verifyForm();" method="post">
     <input type="hidden" name="id" value="{{id}}">
     <input type="hidden" name="bookId" value="{{book.id}}">
     <table>
         <tr><td>书名</td><td><a href="/book/{{book.id}}">{{book.title}}</a></td></tr>
         <tr><td>零售价</td><td>{{book.price}}</td></tr>
-        <tr><td>渠道商</td><td><input type="text" size="30" maxlength="30" name="upstream" value="{{upstream}}"></td></tr>
-        <tr><td>进货价</td><td><input type="text" size="30" maxlength="30" name="price" value="{{uprice}}"></td></tr>
-        <tr><td>数量</td><td><input type="text" size="30" maxlength="30" name="count" value="{{count}}"></td></tr>
+        <tr><td>渠道商</td><td><input type="text" size="30" maxlength="30" name="upstream" id="upstream" value="{{upstream}}"></td></tr>
+        <tr><td>进货价</td><td><input type="text" size="30" maxlength="30" name="price" id="price" value="{{uprice}}"></td></tr>
+        <tr><td>数量</td><td><input type="text" size="30" maxlength="30" name="count" id="count" value="{{count}}"></td></tr>
         <tr><td>状态</td><td>{{orderStatusName status}}</td></tr>
         {{#if finalized}}
             <tr><td>订单不可修改。</td></tr>
@@ -19,3 +19,22 @@
         {{/if}}
     </table>
 </form>
+<script>
+function verifyForm() {
+    var upstream = document.getElementById('upstream').value;
+    var count = document.getElementById('count').value;
+    var price = document.getElementById('price').value;
+    if (!upstream) {
+        alert('渠道商不能为空');
+    }
+    else if (!count.match(/^\d+$/) || count <= 0) {
+        alert('数量非法');
+    }
+    else if (!price.match(/^\d+$/) || price <= 0) {
+        alert('进货价非法');
+    }
+    else
+        return true;
+    return false;
+}
+</script>
