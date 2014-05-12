@@ -331,28 +331,34 @@ app.get('/order/:id/cancel', function(req, res) {
 
 app.get('/order/:id/pay', function(req, res) {
     var id = req.params.id;
-    new Order({ id: id }).fetch({ withRelated: 'book' }).then(function(order) {
+    new Order({ id: id }).fetch({ withRelated: 'book'}).then(function(order) {
         if (order.get("status") != 0) {
             throw "Invalid state";
         }
         order.set("status", 1);
-        return order.save().then(function() {
-            return knex.raw('UPDATE books SET stock = stock + ' + order.get("count") + ' WHERE id = ' + order.get('bookId'));
-        }).then(function() {
-            var info = order.toJSON();
-            new Invoice({
-                logtime: Date.now(),
-                type: '支出',
-                message: '从“' + info.upstream + '”进货' + info.count + '本“' + info.book.title
-                    + '” 支出了' + info.uprice * info.count + '元'
-            }).save().then(function() {
+        return bookshelf.DB.transaction(function(t) {
+            return order.save(null, { transacting: t }).then(function() {
+                return knex('books').transacting(t).where('id', '=', order.get('bookId')).increment('stock', order.get('count'));
+            }).then(function() {
+                throw 'error';
+                var info = order.toJSON();
+                return new Invoice({
+                    logtime: Date.now(),
+                    type: '支出',
+                    message: '从“' + info.upstream + '”进货' + info.count + '本“' + info.book.title
+                        + '” 支出了' + info.uprice * info.count + '元'
+                }).save(null, { transacting: t })
+            }).then(function() {
+                t.commit();
+                res.redirect('/order/' + id);
+            }).catch(function(err) {
+                t.rollback();
                 res.redirect('/order/' + id);
             });
         });
     }).catch(function(err) {
-        console.log(err);
-        res.redirect('/');
-    });
+        res.redirect('/order/' + id);
+    })
 });
 
 app.post('/order/edit', function(req, res) {
