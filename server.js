@@ -260,7 +260,7 @@ app.post('/book/edit', function(req, res) {
     var publisher = req.body.publisher;
     var author = req.body.author;
     var price = req.body.price;
-    var stock = 0;
+    var stock = req.body.stock;
 
     var succ = function(book) {
         res.redirect('/book/' + book.id);
